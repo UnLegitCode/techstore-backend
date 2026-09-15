@@ -26,5 +26,5 @@ springdoc:
 
 app:
   jwt:
-    secret: abcdefghijklmnoprstuvwxyz1234567890
+    secret: 8jmpQIEAVaoEG6U25HW3GxoIJYE4UwWw
     expiration-ms: 86400000 # 24 часа
