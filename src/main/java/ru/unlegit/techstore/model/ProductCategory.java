@@ -11,12 +11,13 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 @Entity
-@Table(name = "categories")
+@Table(name = "product_categories")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductCategory extends BaseEntity {
 
     @Column(nullable = false)
     String title;
+
     @Column(name = "emoji", nullable = false)
     String emoji;
 }

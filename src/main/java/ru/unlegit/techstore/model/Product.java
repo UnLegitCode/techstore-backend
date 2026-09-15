@@ -15,19 +15,26 @@ public class Product extends BaseEntity {
 
     @Column(nullable = false)
     String title;
+
     @JoinColumn(name = "category_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     ProductCategory category;
+
     @Column(nullable = false)
     double price;
+
     @Column(name = "previous_price")
     Double previousPrice;
+
     @Column(nullable = false)
-    Double rating;
+    double rating;
+
     @Column(nullable = false)
     int reviews;
+
     @Column(name = "emoji", nullable = false)
     String emoji;
+
     @Column
     String badge;
 }
