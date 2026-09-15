@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: techstore-backend
+  datasource:
+    url: jdbc:postgresql://localhost:5432/shop_db
+    username: postgres
+    password: postgres
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+  spring:
+    jpa:
+      hibernate:
+        ddl-auto: validate
