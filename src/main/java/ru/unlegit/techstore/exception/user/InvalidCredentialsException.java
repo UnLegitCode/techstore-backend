@@ -1,4 +1,4 @@
-package ru.unlegit.techstore.exception;
+package ru.unlegit.techstore.exception.user;
 
 public class InvalidCredentialsException extends RuntimeException {
 
