@@ -3,14 +3,15 @@ package ru.unlegit.techstore.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "product_categories")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductCategory extends BaseEntity {
