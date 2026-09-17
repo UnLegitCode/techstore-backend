@@ -26,10 +26,6 @@ public class AuthController {
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Регистрация нового пользователя")
     @ApiResponse(
-            responseCode = "201", description = "Пользователь успешно зарегистрирован",
-            content = @Content(schema = @Schema(implementation = AuthResponse.class))
-    )
-    @ApiResponse(
             responseCode = "409", description = "Email уже занят",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class))
     )
@@ -37,6 +33,7 @@ public class AuthController {
             responseCode = "400", description = "Ошибка валидации",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class))
     )
+    @ApiResponse(responseCode = "201", description = "Пользователь успешно зарегистрирован", content = @Content)
     public AuthResponse register(@Valid @RequestBody RegisterRequest request) {
         return authService.register(request);
     }
@@ -44,13 +41,10 @@ public class AuthController {
     @PostMapping("/login")
     @Operation(summary = "Вход в систему")
     @ApiResponse(
-            responseCode = "200", description = "Успешный вход",
-            content = @Content(schema = @Schema(implementation = AuthResponse.class))
-    )
-    @ApiResponse(
             responseCode = "401", description = "Неверный email или пароль",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class))
     )
+    @ApiResponse(responseCode = "200", description = "Успешный вход", content = @Content)
     public AuthResponse login(@Valid @RequestBody LoginRequest request) {
         return authService.login(request);
     }
@@ -62,10 +56,6 @@ public class AuthController {
                     "перестанет возвращаться в ответе и будет отправляться письмом."
     )
     @ApiResponse(
-            responseCode = "200", description = "Токен сброса пароля сгенерирован",
-            content = @Content(schema = @Schema(implementation = MessageResponse.class))
-    )
-    @ApiResponse(
             responseCode = "400", description = "Ошибка валидации",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class))
     )
@@ -73,6 +63,7 @@ public class AuthController {
             responseCode = "401", description = "Аккаунт не найден",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class))
     )
+    @ApiResponse(responseCode = "200", description = "Токен сброса пароля сгенерирован", content = @Content)
     public MessageResponse requestPasswordReset(@Valid @RequestBody PasswordResetRequest request) {
         String token = authService.requestPasswordReset(request);
 
@@ -82,10 +73,6 @@ public class AuthController {
     @PostMapping("/password-reset/confirm")
     @Operation(summary = "Подтверждение сброса пароля")
     @ApiResponse(
-            responseCode = "200", description = "Пароль успешно изменён",
-            content = @Content(schema = @Schema(implementation = MessageResponse.class))
-    )
-    @ApiResponse(
             responseCode = "400", description = "Ошибка валидации",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class))
     )
@@ -93,6 +80,7 @@ public class AuthController {
             responseCode = "401", description = "Невалидный или просроченный токен",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class))
     )
+    @ApiResponse(responseCode = "200", description = "Пароль успешно изменён", content = @Content)
     public MessageResponse confirmPasswordReset(@Valid @RequestBody PasswordResetConfirmRequest request) {
         authService.confirmPasswordReset(request);
 

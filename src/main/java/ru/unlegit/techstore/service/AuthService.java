@@ -8,9 +8,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.unlegit.techstore.dto.auth.*;
-import ru.unlegit.techstore.exception.EmailAlreadyExistsException;
-import ru.unlegit.techstore.exception.InvalidCredentialsException;
-import ru.unlegit.techstore.exception.InvalidOrExpiredTokenException;
+import ru.unlegit.techstore.exception.user.EmailAlreadyExistsException;
+import ru.unlegit.techstore.exception.user.InvalidCredentialsException;
+import ru.unlegit.techstore.exception.user.InvalidOrExpiredTokenException;
 import ru.unlegit.techstore.model.PasswordResetToken;
 import ru.unlegit.techstore.model.User;
 import ru.unlegit.techstore.repository.PasswordResetTokenRepository;
@@ -77,7 +77,7 @@ public class AuthService {
         resetToken.setExpiresAt(LocalDateTime.now().plusMinutes(RESET_TOKEN_TTL_MINUTES));
         resetTokenRepository.save(resetToken);
 
-        log.info("Password reset token for {}: {}", user.getEmail(), rawToken);
+        log.debug("Password reset token for {}: {}", user.getEmail(), rawToken);
 
         return rawToken;
     }
