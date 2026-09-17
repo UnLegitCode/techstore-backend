@@ -1,14 +1,15 @@
 package ru.unlegit.techstore.model;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "products")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Product extends BaseEntity {
