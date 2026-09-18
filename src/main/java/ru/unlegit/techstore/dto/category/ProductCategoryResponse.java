@@ -12,5 +12,4 @@ public record ProductCategoryResponse(
 
         @Schema(description = "Emoji-иконка категории", example = "📱")
         String emoji
-
 ) {}

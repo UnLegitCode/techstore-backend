@@ -7,13 +7,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.unlegit.techstore.dto.cart.CartItemRequest;
-import ru.unlegit.techstore.dto.cart.CartItemResponse;
 import ru.unlegit.techstore.dto.cart.CartItemUpdateRequest;
 import ru.unlegit.techstore.dto.cart.CartResponse;
-import ru.unlegit.techstore.dto.category.ProductCategoryResponse;
-import ru.unlegit.techstore.dto.product.ProductResponse;
 import ru.unlegit.techstore.exception.cart.CartItemNotFoundException;
 import ru.unlegit.techstore.exception.product.ProductNotFoundException;
+import ru.unlegit.techstore.mapper.CartMapper;
 import ru.unlegit.techstore.model.CartItem;
 import ru.unlegit.techstore.model.Product;
 import ru.unlegit.techstore.model.User;
@@ -30,12 +28,13 @@ public class CartItemService {
 
     CartItemRepository cartItemRepository;
     ProductRepository productRepository;
+    CartMapper cartMapper;
 
     @Transactional(readOnly = true)
     public CartResponse getCart(int userId) {
         List<CartItem> items = cartItemRepository.findByUserId(userId);
 
-        return mapToCartResponse(items);
+        return cartMapper.toResponse(items);
     }
 
     @Transactional
@@ -110,49 +109,5 @@ public class CartItemService {
         user.setId(userId);
 
         return user;
-    }
-
-    private CartResponse mapToCartResponse(List<CartItem> items) {
-        List<CartItemResponse> itemResponses = items.stream()
-                .map(this::mapToItemResponse)
-                .toList();
-
-        double totalPrice = items.stream()
-                .mapToDouble(i -> i.getProduct().getPrice() * i.getQuantity())
-                .sum();
-
-        int totalQuantity = items.stream()
-                .mapToInt(CartItem::getQuantity)
-                .sum();
-
-        return new CartResponse(itemResponses, totalPrice, totalQuantity);
-    }
-
-    private CartItemResponse mapToItemResponse(CartItem item) {
-        Product product = item.getProduct();
-        var category = product.getCategory();
-
-        ProductCategoryResponse categoryResponse = new ProductCategoryResponse(
-                category.getId(), category.getTitle(), category.getEmoji()
-        );
-
-        ProductResponse productResponse = new ProductResponse(
-                product.getId(),
-                product.getTitle(),
-                categoryResponse,
-                product.getPrice(),
-                product.getPreviousPrice(),
-                product.getRating(),
-                product.getReviews(),
-                product.getEmoji(),
-                product.getBadge()
-        );
-
-        return new CartItemResponse(
-                item.getId(),
-                productResponse,
-                item.getQuantity(),
-                item.getAddedAt()
-        );
     }
 }

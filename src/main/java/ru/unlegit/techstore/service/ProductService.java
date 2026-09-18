@@ -8,12 +8,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.unlegit.techstore.dto.category.ProductCategoryResponse;
 import ru.unlegit.techstore.dto.product.ProductFilter;
 import ru.unlegit.techstore.dto.product.ProductRequest;
 import ru.unlegit.techstore.dto.product.ProductResponse;
 import ru.unlegit.techstore.exception.category.ProductCategoryNotFoundException;
 import ru.unlegit.techstore.exception.product.ProductNotFoundException;
+import ru.unlegit.techstore.mapper.ProductMapper;
 import ru.unlegit.techstore.model.Product;
 import ru.unlegit.techstore.model.ProductCategory;
 import ru.unlegit.techstore.repository.ProductCategoryRepository;
@@ -28,19 +28,20 @@ public class ProductService {
 
     ProductRepository productRepository;
     ProductCategoryRepository productCategoryRepository;
+    ProductMapper productMapper;
 
     @Transactional(readOnly = true)
     public Page<ProductResponse> getAllProducts(ProductFilter filter, Pageable pageable) {
         return productRepository
                 .findAll(ProductSpecifications.fromFilter(filter), pageable)
-                .map(this::mapToResponse);
+                .map(productMapper::toResponse);
     }
 
     @Transactional(readOnly = true)
     public ProductResponse getProductById(int id) {
         Product product = findProductOrThrow(id);
 
-        return mapToResponse(product);
+        return productMapper.toResponse(product);
     }
 
     @Transactional
@@ -62,7 +63,7 @@ public class ProductService {
 
         log.debug("Товар создан: {} (id={})", product.getTitle(), product.getId());
 
-        return mapToResponse(product);
+        return productMapper.toResponse(product);
     }
 
     @Transactional
@@ -83,7 +84,7 @@ public class ProductService {
 
         log.debug("Товар обновлён: id={}", id);
 
-        return mapToResponse(product);
+        return productMapper.toResponse(product);
     }
 
     @Transactional
@@ -107,26 +108,5 @@ public class ProductService {
                 .orElseThrow(() -> new ProductCategoryNotFoundException(
                         "Категория с id=%d не найдена".formatted(categoryId)
                 ));
-    }
-
-    private ProductResponse mapToResponse(Product product) {
-        ProductCategory category = product.getCategory();
-        ProductCategoryResponse categoryResponse = new ProductCategoryResponse(
-                category.getId(),
-                category.getTitle(),
-                category.getEmoji()
-        );
-
-        return new ProductResponse(
-                product.getId(),
-                product.getTitle(),
-                categoryResponse,
-                product.getPrice(),
-                product.getPreviousPrice(),
-                product.getRating(),
-                product.getReviews(),
-                product.getEmoji(),
-                product.getBadge()
-        );
     }
 }

@@ -11,6 +11,7 @@ import ru.unlegit.techstore.dto.category.ProductCategoryResponse;
 import ru.unlegit.techstore.exception.category.ProductCategoryAlreadyExistsException;
 import ru.unlegit.techstore.exception.category.ProductCategoryInUseException;
 import ru.unlegit.techstore.exception.category.ProductCategoryNotFoundException;
+import ru.unlegit.techstore.mapper.ProductCategoryMapper;
 import ru.unlegit.techstore.model.ProductCategory;
 import ru.unlegit.techstore.repository.ProductCategoryRepository;
 import ru.unlegit.techstore.repository.ProductRepository;
@@ -25,19 +26,18 @@ public class ProductCategoryService {
 
     ProductCategoryRepository productCategoryRepository;
     ProductRepository productRepository;
+    ProductCategoryMapper productCategoryMapper;
 
     @Transactional(readOnly = true)
     public List<ProductCategoryResponse> getAllCategories() {
-        return productCategoryRepository.findAll().stream()
-                .map(this::mapToResponse)
-                .toList();
+        return productCategoryMapper.toResponseList(productCategoryRepository.findAll());
     }
 
     @Transactional(readOnly = true)
     public ProductCategoryResponse getCategoryById(Integer id) {
         ProductCategory category = findCategoryOrThrow(id);
 
-        return mapToResponse(category);
+        return productCategoryMapper.toResponse(category);
     }
 
     @Transactional
@@ -57,7 +57,7 @@ public class ProductCategoryService {
 
         log.debug("Категория создана: {} (id={})", category.getTitle(), category.getId());
 
-        return mapToResponse(category);
+        return productCategoryMapper.toResponse(category);
     }
 
     @Transactional
@@ -79,7 +79,7 @@ public class ProductCategoryService {
 
         log.debug("Категория обновлена: id={}", id);
 
-        return mapToResponse(category);
+        return productCategoryMapper.toResponse(category);
     }
 
     @Transactional
@@ -103,13 +103,5 @@ public class ProductCategoryService {
                 .orElseThrow(() -> new ProductCategoryNotFoundException(
                         "Категория с id=%d не найдена".formatted(id)
                 ));
-    }
-
-    private ProductCategoryResponse mapToResponse(ProductCategory category) {
-        return new ProductCategoryResponse(
-                category.getId(),
-                category.getTitle(),
-                category.getEmoji()
-        );
     }
 }
