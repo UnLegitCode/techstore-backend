@@ -1,0 +1,32 @@
+@baseUrl = http://localhost:8080
+
+### Получить содержимое корзины (аутентифицированный пользователь)
+GET {{baseUrl}}/api/cart
+Authorization: Bearer {{accessToken}}
+
+### Добавить товар в корзину
+POST {{baseUrl}}/api/cart
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "productId": 4,
+  "quantity": 2
+}
+
+### Изменить количество товара в корзине
+PUT {{baseUrl}}/api/cart/1
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "quantity": 3
+}
+
+### Удалить товар из корзины
+DELETE {{baseUrl}}/api/cart/1
+Authorization: Bearer {{accessToken}}
+
+### Полностью очистить корзину
+DELETE {{baseUrl}}/api/cart
+Authorization: Bearer {{accessToken}}

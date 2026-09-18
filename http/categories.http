@@ -1,0 +1,31 @@
+@baseUrl = http://localhost:8080
+
+### Получить список категорий (публичный)
+GET {{baseUrl}}/api/categories
+
+### Получить категорию по ID (публичный)
+GET {{baseUrl}}/api/categories/1
+
+### Создать категорию (ADMIN)
+POST {{baseUrl}}/api/categories
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "title": "Смартфоны",
+  "emoji": "\ud83d\udcf1"
+}
+
+### Обновить категорию (ADMIN)
+PUT {{baseUrl}}/api/categories/3
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "title": "Мобильные телефоны",
+  "emoji": "\ud83d\udcde"
+}
+
+### Удалить категорию (ADMIN)
+DELETE {{baseUrl}}/api/categories/3
+Authorization: Bearer {{accessToken}}

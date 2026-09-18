@@ -1,0 +1,42 @@
+@baseUrl = http://localhost:8080
+
+### Получить список товаров (публичный)
+GET {{baseUrl}}/api/products?page=1
+
+### Получить товар по ID (публичный)
+GET {{baseUrl}}/api/products/1
+
+### Создать товар (ADMIN)
+POST {{baseUrl}}/api/products
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "title": "iPhone 15 Pro",
+  "categoryId": 3,
+  "price": 999.99,
+  "previousPrice": 1199.99,
+  "rating": 4.5,
+  "reviews": 128,
+  "emoji": "\ud83d\udcf1",
+  "badge": "sale"
+}
+
+### Обновить товар (ADMIN)
+PUT {{baseUrl}}/api/products/4
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "title": "iPhone 15 Pro Max",
+  "categoryId": 3,
+  "price": 1099.99,
+  "rating": 4.7,
+  "reviews": 200,
+  "emoji": "\ud83d\udcf1",
+  "badge": "new"
+}
+
+### Удалить товар (ADMIN)
+DELETE {{baseUrl}}/api/products/4
+Authorization: Bearer {{accessToken}}

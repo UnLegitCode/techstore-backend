@@ -1,0 +1,50 @@
+@baseUrl = http://localhost:8080
+
+### Регистрация пользователя
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "SecurePass123"
+}
+
+> {%
+    client.global.set("accessToken", response.body.token);
+    client.global.set("userId", response.body.userId);
+%}
+
+### Вход в систему
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "SecurePass123"
+}
+
+> {%
+    client.global.set("accessToken", response.body.token);
+    client.global.set("userId", response.body.userId);
+%}
+
+### Запрос сброса пароля
+POST {{baseUrl}}/api/auth/password-reset/request
+Content-Type: application/json
+
+{
+  "email": "user@example.com"
+}
+
+> {%
+    client.global.set("resetToken", response.body.token);
+%}
+
+### Подтверждение сброса пароля
+POST {{baseUrl}}/api/auth/password-reset/confirm
+Content-Type: application/json
+
+{
+  "token": "{{resetToken}}",
+  "newPassword": "NewSecurePass"
+}
