@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.unlegit.techstore.dto.cart.CartItemRequest;
@@ -20,6 +21,7 @@ import ru.unlegit.techstore.util.AuthenticationUtil;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/cart")
+@PreAuthorize("isAuthenticated()")
 @Tag(name = "Корзина", description = "Управление товарами в корзине пользователя")
 public class CartItemController {
 

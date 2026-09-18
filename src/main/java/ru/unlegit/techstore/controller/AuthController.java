@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.unlegit.techstore.dto.auth.*;
 import ru.unlegit.techstore.dto.info.ErrorResponse;
@@ -23,6 +24,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
+    @PreAuthorize("permitAll()")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Регистрация нового пользователя")
     @ApiResponse(
@@ -39,6 +41,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
+    @PreAuthorize("permitAll()")
     @Operation(summary = "Вход в систему")
     @ApiResponse(
             responseCode = "401", description = "Неверный email или пароль",
@@ -49,6 +52,7 @@ public class AuthController {
         return authService.login(request);
     }
 
+    @PreAuthorize("permitAll()")
     @PostMapping("/password-reset/request")
     @Operation(
             summary = "Запрос на восстановление пароля",
@@ -70,6 +74,7 @@ public class AuthController {
         return new MessageResponse("Токен сброса пароля сгенерирован", token);
     }
 
+    @PreAuthorize("permitAll()")
     @PostMapping("/password-reset/confirm")
     @Operation(summary = "Подтверждение сброса пароля")
     @ApiResponse(

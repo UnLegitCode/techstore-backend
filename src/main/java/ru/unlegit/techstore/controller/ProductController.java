@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.unlegit.techstore.dto.info.ErrorResponse;
 import ru.unlegit.techstore.dto.product.ProductFilter;
@@ -30,6 +31,7 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
+    @PreAuthorize("permitAll()")
     @ApiResponse(responseCode = "200", description = "Список товаров успешно получен")
     @Operation(summary = "Получить список товаров с фильтрацией, сортировкой и пагинацией")
     public Page<ProductResponse> getAllProducts(
@@ -49,6 +51,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("permitAll()")
     @Operation(summary = "Получить товар по ID")
     @ApiResponse(responseCode = "200", description = "Товар найден")
     @ApiResponse(
@@ -63,6 +66,7 @@ public class ProductController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Создать новый товар")
     @ApiResponse(responseCode = "201", description = "Товар создан")
@@ -75,6 +79,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Обновить товар")
     @ApiResponse(responseCode = "200", description = "Товар обновлён")
     @ApiResponse(
@@ -90,6 +95,7 @@ public class ProductController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Удалить товар")
     @ApiResponse(responseCode = "204", description = "Товар удалён")
     @ApiResponse(
